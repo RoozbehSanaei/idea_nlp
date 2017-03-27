@@ -1,0 +1,80 @@
+prep_of(Effects-1, glucocorticoids-3)
+amod(arthritis-6, rheumatoid-5)
+prep_in(Effects-1, arthritis-6)
+
+amod(receptors-3, Diminished-1)
+nn(receptors-3, glucocorticoid-2)
+nsubj(result-6, receptors-3)
+aux(result-6, do-4)
+neg(result-6, not-5)
+nn(resistance-9, glucocorticoid-8)
+prep_in(result-6, resistance-9)
+
+
+
+nsubj(have-10, Lymphocytes-1)
+prep_of(Lymphocytes-1, patients-3)
+amod(arthritis-6, rheumatoid-5)
+prep_with(patients-3, arthritis-6)
+appos(arthritis-6, RA-8)
+amod(density-13, diminished-11)
+nn(density-13, receptor-12)
+dobj(have-10, density-13)
+advmod(have-10, thus-15)
+nsubj(show-21, patients-17)
+prep_with(patients-17, RA-19)
+aux(show-21, should-20)
+ccomp(have-10, show-21)
+amod(resistance-23, partial-22)
+dobj(show-21, resistance-23)
+prep_to(show-21, glucocorticoids-25)
+
+nsubj(investigated-2, We-1)
+det(sensitivity-5, the-3)
+nn(sensitivity-5, glucocorticoid-4)
+dobj(investigated-2, sensitivity-5)
+prep_of(sensitivity-5, lymphocytes-7)
+nn(patients-10, RA-9)
+prep_in(lymphocytes-7, patients-10)
+amod(subjects-14, healthy-13)
+prep_compared_with(investigated-2, subjects-14)
+
+
+
+nsubj(determined-2, We-1)
+det(effects-4, the-3)
+dobj(determined-2, effects-4)
+prep_of(effects-4, glucocorticoids-6)
+nn(proliferation-9, lymphocyte-8)
+prep_on(glucocorticoids-6, proliferation-9)
+nn(release-12, cytokine-11)
+conj_and(proliferation-9, release-12)
+
+
+
+nsubjpass(inhibited-6, Proliferation-1)
+nn(release-4, cytokine-3)
+conj_and(Proliferation-1, release-4)
+auxpass(inhibited-6, were-5)
+nn(patients-9, RA-8)
+prep_in(inhibited-6, patients-9)
+det(extent-13, the-11)
+amod(extent-13, same-12)
+prep_to(inhibited-6, extent-13)
+dep(in-15, as-14)
+dep(inhibited-6, in-15)
+amod(controls-17, healthy-16)
+pobj(in-15, controls-17)
+
+
+
+amod(density-3, Diminished-1)
+nn(density-3, receptor-2)
+nsubj(result-9, density-3)
+nn(patients-6, RA-5)
+prep_in(density-3, patients-6)
+aux(result-9, does-7)
+neg(result-9, not-8)
+nn(resistance-12, glucocorticoid-11)
+prep_in(result-9, resistance-12)
+

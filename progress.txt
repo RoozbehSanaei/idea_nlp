@@ -1,5 +1,2 @@
-1. Wiki files put togther in a same folder.
-2. A test file made for it.
-3. igraph installed and worked
-4. files sorted.
+New clustering algorithms added up
 
