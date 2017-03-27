@@ -1,1 +1,5 @@
-We made a lot of progress, too many to list
+1. Wiki files put togther in a same folder.
+2. A test file made for it.
+3. igraph installed and worked
+4. files sorted.
+
