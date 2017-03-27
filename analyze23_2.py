@@ -74,31 +74,15 @@ def findMeaningfulCutoffProbability(alltokens):
     return probs_cutoff_lower
 
 
-jj = 0
 
 
-human_rated_files = [
-'/home/roozbeh/data/wiki/Ideation Data/grouping similarity/n50_group_experienced_bc.csv',
-'/home/roozbeh/data/wiki/Ideation Data/grouping similarity/n50_group_experienced_rma.csv',
-'/home/roozbeh/data/wiki/Ideation Data/grouping similarity/n50sample_distributed_experienced_bc.csv',
-'/home/roozbeh/data/wiki/Ideation Data/grouping similarity/n50sample_distributed_experienced_rma.csv',
-'/home/roozbeh/data/wiki/Ideation Data/grouping similarity/n50sample_group_novice_bc.csv',
-'/home/roozbeh/data/wiki/Ideation Data/grouping similarity/n50sample_group_novice_rma.csv'
-]
+brad_file = '/home/roozbeh/data/wiki/data/n50_de_bc.csv'
+ryan_file = '/home/roozbeh/data/wiki/data/n50_de_rma.csv'
 
-files = [
-'Distributed Experience and Novice (superset) clean',
-'n1400 distributed novice',
-'n1400 group experienced',
-'n100 group novice',
-'n100 distributed experienced'
-]
 
-jj = 0
 
-outputbasepath = '/home/roozbeh/data/wiki/'
 
-gn = pd.read_csv(human_rated_files[jj])
+gn = pd.read_csv(brad_file)
 
     
 tqdm.pandas(desc="Make Spacy Tokens")
@@ -117,7 +101,7 @@ for lemmas in selected_lemmas:
 
 import gensim
 from gensim import corpora, models
-model = gensim.models.Word2Vec.load("wiki.en.word2vec.model")    
+model = gensim.models.Word2Vec.load("wiki_files/wiki.en.word2vec.model")    
 
 # remove repetitive words or those that are not found in wikipedia vocabulary
 words = list(set(words))
@@ -222,15 +206,14 @@ L1 = [[clusters[i],gn['ID'][i]] for i in range(len(selected_lemmas))]
 L1.sort(key=lambda x: x[0])
 
 results = pd.DataFrame(L1)
-results.to_csv("clusters_w2v_h"+str(jj)+".csv")
+results.to_csv("clusters_w2v_h.csv")
 
 
 
 
 
-ii = 0
-bc = pd.read_csv(human_rated_files[jj])
-rma = pd.read_csv(human_rated_files[jj+1])
+bc = pd.read_csv(brad_file)
+rma = pd.read_csv(ryan_file)
 
     
 bc['tokens'] = bc.ix[:,3].progress_apply(lambda x: cleanPassage(x))    
