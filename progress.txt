@@ -1,2 +1,3 @@
 New clustering algorithms added up
 software re-tested and adapted with new data files. (just to ensure data is true)
+code is modularized into multiple modules for clarity
