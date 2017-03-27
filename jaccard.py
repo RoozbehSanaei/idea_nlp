@@ -20,6 +20,8 @@ def coverage(s1,s2):
 
 #Do a shitty greedy version cause fuck this bs
 def greedy_match_sets(r1,r2):
+
+    result_file = open("results/results.txt", "w")
     #compute the pairwise jaccard score matrix
     if len(r1)<len(r2):
         ss = r1
@@ -59,10 +61,13 @@ def greedy_match_sets(r1,r2):
             score+=len(ss[ss_keys[i]]&sl[sl_keys[j]])
     max_score = 50
     #pretty-print results
-    print("____________________________\n")
-    print("Score: {}\n".format(score/max_score))
+    print("____________________________\n",file=test_file)
+    print("Score: {}\n".format(score/max_score),file=test_file)
     #print matchings
     for i, l in enumerate(matchings):
-        print("{}:".format(ss_keys[i]))
+        print("{}:".format(ss_keys[i]),file=test_file)
         for j in l:
-            print("\t{}".format(sl_keys[j]))
+            print("\t{}".format(sl_keys[j]),file=test_file)
+
+    test_file.close()
+
