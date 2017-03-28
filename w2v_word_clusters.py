@@ -37,7 +37,7 @@ def w2v_word_clusters(selected_lemmas):
     #cluster
     import numpy
     from sklearn.cluster import AffinityPropagation
-    af = AffinityPropagation(preference=-4.5).fit(similarity_matrix)
+    af = AffinityPropagation().fit(similarity_matrix)
     labels = af.labels_
 
     # sum of similarities for each word
