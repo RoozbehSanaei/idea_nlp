@@ -1,0 +1,49 @@
+[25, 33, 33, 47, 47, 27, 34, 52, 49, 56, 27, 33, 33, 34, 25, 56, 47, 47, 25, 47, 22, 47, 47, 34, 56, 47, 56, 34, 22, 34, 34, 47, 34, 29, 22, 22, 33, 34, 29, 34, 28, 20, 47, 47, 47, 47, 34, 29, 22, 25, 33, 22, 22, 22, 53, 47, 36, 22, 33, 25, 22, 47, 22, 44, 47, 22, 26, 56, 36, 56, 56, 56, 56, 29, 29, 15, 19, 25, 22, 0, 47, 56, 33, 56, 56, 56, 53, 56, 47, 34, 34, 47, 22, 47, 22, 56, 11, 43, 56, 34]
+number of clusters :  100
+____________________________
+
+Score: 0.46
+
+0:
+11:
+15:
+19:
+20:
+22:
+	service - renting
+	electric vehicle
+	comforts
+	standard car
+25:
+26:
+27:
+	standard bike
+28:
+29:
+	human powered
+33:
+	moving surface
+	cable
+34:
+	standard rail system
+	standard bus
+36:
+	teleportation
+43:
+44:
+47:
+	self-driving cars
+	regulation
+	virtual
+	tubes
+	new roads
+	enhanced car
+49:
+52:
+	boat
+53:
+56:
+	flying
+	personal vehicle
+	levitation
+	service - sharing
