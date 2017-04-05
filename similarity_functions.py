@@ -1,3 +1,4 @@
+import numpy
 import gensim
 from gensim import corpora, models
 global model 
@@ -26,7 +27,7 @@ def max_set_similairy(A,B):
 
 def vec_similairy(A,B):
     p = 0
-    w_A = sum([model.wv[w] for w in A])
+    w_A = sum([model.wv[w] for w in A if w in model.wv.vocab])
     w_B = sum([model.wv[w] for w in B if w in model.wv.vocab])
     if ((numpy.linalg.norm(w_A)!=0) & (numpy.linalg.norm(w_B)!=0)):
         p = numpy.dot(w_A,w_B)/(numpy.linalg.norm(w_A)*numpy.linalg.norm(w_B)+0.000001)

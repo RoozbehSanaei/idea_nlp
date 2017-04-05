@@ -21,6 +21,7 @@ import sys
 import statistics
 import random
 import os
+import similarity_functions
 
 def cleanPassage(rawtext):
     #some code from https://nicschrading.com/project/Intro-to-NLP-with-spaCy/
@@ -194,9 +195,9 @@ def get_cluster(f,K):
     max_cliques = int(K)
     modules = calculateModularity(G_gn, max_cliques)
     gn = calc_cluster(modules, gn)
-    df = gn[['cluster', 'lemmas']]
-    final_array = [list(l) for l in df.values]
-    return final_array
+    df = gn['lemmas']
+    final_array = [l[0] for l in df.values if l[0] in similarity_functions.model.wv.vocab]
+    return list(df)
 
-"""c = get_cluster(4)
-print(c)"""
+c = get_cluster("n50_ge_bc",4)
+print(c)

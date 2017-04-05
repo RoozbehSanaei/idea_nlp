@@ -1,26 +1,38 @@
 import similarity_functions
 import numpy
 from sklearn import cluster
- 
-def w2v_sentence_clusters(sentences,i):
+import igraph
+from cluster import cluster			
+
+def w2v_sentence_clusters(sentences,s,c):
 	cl_mat = numpy.zeros((len(sentences),len(sentences)))
+
+	"""
+	import pickle
+	output = open('data_pocket.pkl', 'wb')
+	pickle.dump([sentences,i], output)
+
+	import pickle
+	pkl_file = open('data_pocket.pkl', 'rb')
+	[sentences,i] = pickle.load(pkl_file)
+
+	"""
 
 	for sent1 in sentences:
 		for sent2  in sentences:
 			i1 = sentences.index(sent1)
 			i2 = sentences.index(sent2)
 
-			if (i==1):
+			if (s=='num_word_similarity'):
 				cl_mat[i1][i2] = similarity_functions.num_word_similarity(sent1,sent2)
-			elif (i==2):
+			elif (s=='total_set_similairy'):
 				cl_mat[i1][i2] = similarity_functions.total_set_similairy(sent1,sent2)
-			elif (i==3):
+			elif (s=='max_set_similairy'):
 				cl_mat[i1][i2] = similarity_functions.max_set_similairy(sent1,sent2)
-			elif (i==4):
+			elif (s=='vec_similairy'):
 				cl_mat[i1][i2] = similarity_functions.vec_similairy(sent1,sent2)
 
 
-
-	af = cluster.AffinityPropagation().fit(cl_mat)
-	clusters = af.labels_
+	clusters = cluster(c,cl_mat)
+	
 	return(clusters)
