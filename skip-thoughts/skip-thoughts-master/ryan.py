@@ -53,7 +53,7 @@ for i in doc_set:
 
 sentences = [' '.join(text) for text in texts if text != []]
 
-import skipthoughts
+from . import skipthoughts
 model = skipthoughts.load_model()
 encoder = skipthoughts.Encoder(model)
 vectors = encoder.encode(sentences)

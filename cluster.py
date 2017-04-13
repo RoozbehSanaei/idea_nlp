@@ -82,15 +82,15 @@ def cluster(c,M):
 			clusters = cl.labels_
 
 		if c == "Spectral_Clustering_8":
-			cl = clustering.SpectralClustering(n_clusters=8).fit(M)
+			cl = clustering.SpectralClustering(n_clusters=16,affinity='precomputed').fit(M)
 			clusters = cl.labels_
 
 		if c == "Spectral_Clustering_10":
-			cl = clustering.SpectralClustering(n_clusters=10).fit(M)
+			cl = clustering.SpectralClustering(n_clusters=20,affinity='precomputed').fit(M)
 			clusters = cl.labels_
 
 		if c == "Spectral_Clustering_12":
-			cl = clustering.SpectralClustering(n_clusters=12).fit(M)
+			cl = clustering.SpectralClustering(n_clusters=24,affinity='precomputed').fit(M)
 			clusters = cl.labels_
 
 		if c == "Ward_Clustering_8":

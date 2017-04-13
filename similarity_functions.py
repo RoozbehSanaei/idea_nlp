@@ -33,6 +33,27 @@ def vec_similairy(A,B):
         p = numpy.dot(w_A,w_B)/(numpy.linalg.norm(w_A)*numpy.linalg.norm(w_B)+0.000001)
     return p
 
+
+
+def skipthoughts_similarity_N(A,B,encoder):
+    SA = " ".join(A)
+    SB = " ".join(B)
+    vectors = encoder.encode([SA,SB])
+    r = numpy.dot(vectors[0],vectors[1])/(numpy.linalg.norm(vectors[0])*numpy.linalg.norm(vectors[1])+0.000001)
+    print(r)
+    return r
+
+
+def skipthoughts_similarity(A,B,encoder):
+    SA = " ".join(A)
+    SB = " ".join(B)
+    vectors = encoder.encode([SA,SB])
+    r = numpy.dot(vectors[0],vectors[1])
+    print(r)
+    return r
+
+
+
 def num_word_similarity(sent1,sent2):
     l = len(set(sent1) & set(sent2))
     return l

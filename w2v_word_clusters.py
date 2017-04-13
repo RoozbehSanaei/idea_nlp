@@ -35,6 +35,12 @@ def w2v_word_clusters(selected_lemmas,c):
 	words = list(set(words))
 	words = [w for w in words if w in similarity_functions.model.wv.vocab]
 
+
+	tqdm(desc="Make Similarity Matrix")
+	#make the similarity model
+	similarity_matrix = numpy.array([[model.similarity(t1[0], t2[0]) for t1 in tokens] for t2 in tqdm(tokens)])
+
+
 	tqdm(desc="Make Similarity Matrix")
 	#make the similarity model
 	similarity_matrix = numpy.zeros((len(words),len(words)))
