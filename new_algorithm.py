@@ -75,6 +75,8 @@ def findMeaningfulCutoffProbability(alltokens):
 	return probs_cutoff_lower
 
 
+
+
 import gensim
 global model 
 model = gensim.models.Word2Vec.load("wiki_files/wiki.en.word2vec.model")    
@@ -120,3 +122,4 @@ file_utils.rows_to_csv(token_count,['token','POS','count','relevance'],'tokens.c
 
 noun_list = [x for x  in token_count if x[1]=='NOUN']
 noun_list.sort(key=lambda x: -x[3])
+
