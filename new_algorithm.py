@@ -88,6 +88,7 @@ def relevance(w):
 
 jj = 0
 
+#I am now simplifying the file management
 
 print("loading file...",end="",flush=True)
 gn = pd.read_csv('/home/roozbeh/data/wiki/data/n1400_dn.csv')
