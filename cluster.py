@@ -4,127 +4,78 @@ import numpy
 import networkx as nx
 import community
 
-def cluster(c,M):
+def cluster(M,p):
 	clusters = [0]*len(M)
+	threshold_for_bug = 0.00000001
+	M = numpy.array(M)
+	M[M<threshold_for_bug]=threshold_for_bug
+	M = M.tolist()
+
+	alg,c = p;
 
 	try:
-		if c == "community_walktrap_2":
-			g = igraph.Graph.Adjacency(M.tolist(),mode = "undirected")
-			g = g.simplify();
-			d = g.community_walktrap(steps=2)
-			clusters = d.as_clustering().membership			
-
-		if c == "community_walktrap":
-			g = igraph.Graph.Adjacency(M.tolist(),mode = "undirected")
-			g = g.simplify();
-			d = g.community_walktrap()
-			clusters = d.as_clustering().membership			
-
-		if c == "community_edge_betweenness":
-			g = igraph.Graph.Adjacency(M.tolist(),mode = "undirected")
-			g = g.simplify();
-			d = g.community_edge_betweenness()
-			clusters = d.as_clustering().membership			
-
-
-		if c == "community_fastgreedy":
-			g = igraph.Graph.Adjacency(M.tolist(),mode = "undirected")
-			g = g.simplify();
-			d = g.community_fastgreedy()
-			clusters = d.as_clustering().membership			
-
-		if c == "community_multilevel":
-			g = igraph.Graph.Adjacency(M.tolist(),mode = "undirected")
-			g = g.simplify();
-			d = g.community_multilevel()
-			clusters = d.membership			
-
-		if c == "community_spinglass":
-			g = igraph.Graph.Adjacency(M.tolist(),mode = "undirected")
-			g = g.simplify();
-			d = g.community_spinglass()
-			clusters = d.membership			
-
-		if c == "community_leading_eigenvector":
-			g = igraph.Graph.Adjacency(M.tolist(),mode = "undirected")
-			g = g.simplify();
-			d = g.community_leading_eigenvector()
-			clusters = d.membership			
-
-		if c == "louvain":
-			g = nx.from_numpy_matrix(M)
+		if alg == "louvain":
+			g = nx.from_numpy_matrix(numpy.array(M))
 			p = community.best_partition(g)
 			clusters = [p[i] for i in p.keys()]	
 				
-
-		if c == "KMeans_8":
-			cl = clustering.KMeans(n_clusters=8).fit(M)
+		if alg == "kmeans":
+			cl = clustering.KMeans(n_clusters=c).fit(M)
 			clusters = cl.labels_
 
-		if c == "KMeans_10":
-			cl = clustering.KMeans(n_clusters=10).fit(M)
+		if alg == "birch":
+			cl = clustering.Birch(n_clusters=c).fit(M)
 			clusters = cl.labels_
 
-		if c == "KMeans_12":
-			cl = clustering.KMeans(n_clusters=12).fit(M)
+
+
+		if alg == "ward_clustering":
+			cl = clustering.AgglomerativeClustering(n_clusters=c).fit(M)
 			clusters = cl.labels_
 
-		if c == "Birch_8":
-			cl = clustering.Birch(n_clusters=8).fit(M)
+		if alg == "agglomerative_clustering":
+			cl = clustering.AgglomerativeClustering(n_clusters=c, linkage='complete').fit(M)
 			clusters = cl.labels_
 
-		if c == "Birch_10":
-			cl = clustering.Birch(n_clusters=10).fit(M)
-			clusters = cl.labels_
-
-		if c == "Birch_12":
-			cl = clustering.Birch(n_clusters=12).fit(M)
-			clusters = cl.labels_
-
-		if c == "Spectral_Clustering_8":
-			cl = clustering.SpectralClustering(n_clusters=16,affinity='precomputed').fit(M)
-			clusters = cl.labels_
-
-		if c == "Spectral_Clustering_10":
-			cl = clustering.SpectralClustering(n_clusters=20,affinity='precomputed').fit(M)
-			clusters = cl.labels_
-
-		if c == "Spectral_Clustering_12":
-			cl = clustering.SpectralClustering(n_clusters=24,affinity='precomputed').fit(M)
-			clusters = cl.labels_
-
-		if c == "Ward_Clustering_8":
-			cl = clustering.AgglomerativeClustering(n_clusters=8).fit(M)
-			clusters = cl.labels_
-
-		if c == "Ward_Clustering_10":
-			cl = clustering.AgglomerativeClustering(n_clusters=10).fit(M)
-			clusters = cl.labels_
-
-		if c == "Ward_Clustering_12":
-			cl = clustering.AgglomerativeClustering(n_clusters=12).fit(M)
-			clusters = cl.labels_
-
-		if c == "Agglomerative_Clustering_8":
-			cl = clustering.AgglomerativeClustering(n_clusters=8, linkage='complete').fit(M)
-			clusters = cl.labels_
-
-		if c == "Agglomerative_Clustering_10":
-			cl = clustering.AgglomerativeClustering(n_clusters=10, linkage='complete').fit(M)
-			clusters = cl.labels_
-
-		if c == "Agglomerative_Clustering_12":
-			cl = clustering.AgglomerativeClustering(n_clusters=12, linkage='complete').fit(M)
-			clusters = cl.labels_
-
-		if c == "AffinityPropagation":
+		if alg == "affinity_propagation":
 			cl = clustering.AffinityPropagation().fit(M)
 			clusters = cl.labels_
 
-	except:
-		print ("==========Something went wrong here =============")
-		pass
+		if alg == "spectralـnearest_neighbors":
+			cl = clustering.SpectralClustering(n_clusters=c,affinity='nearest_neighbors').fit(M)
+			clusters = cl.labels_
 
+		if alg == "spectralـprecomputed":
+			cl = clustering.SpectralClustering(n_clusters=c,affinity='precomputed').fit(M)
+			clusters = cl.labels_
+
+		if alg == "spectralـrbf":
+			cl = clustering.SpectralClustering(n_clusters=c,affinity='rbf').fit(M)
+			clusters = cl.labels_
+
+		if alg == "spectralـsigmoid":
+			cl = clustering.SpectralClustering(n_clusters=c,affinity='sigmoid').fit(M)
+			clusters = cl.labels_
+
+		if alg == "spectralـpolynomial":
+			cl = clustering.SpectralClustering(n_clusters=c,affinity='polynomial').fit(M)
+			clusters = cl.labels_
+
+		if alg == "spectralـpoly":
+			cl = clustering.SpectralClustering(n_clusters=c,affinity='poly').fit(M)
+			clusters = cl.labels_
+
+		if alg == "spectralـlinear":
+			cl = clustering.SpectralClustering(n_clusters=c,affinity='linear').fit(M)
+			clusters = cl.labels_
+
+		if alg == "spectralـcosine":
+			cl = clustering.SpectralClustering(n_clusters=c,affinity='cosine').fit(M)
+			clusters = cl.labels_
+	except :
+		print("error occurred")
+
+		pass	
 	return(clusters)
 
 

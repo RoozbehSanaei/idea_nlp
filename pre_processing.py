@@ -4,72 +4,124 @@ from spacy.en import English
 global parser
 parser = English()
 from nltk.corpus import stopwords as stopwords
-
+from tqdm import tqdm
+import similarity_functions
+import w2v_word
 
 def cleanPassage(rawtext):
-    global parser
+	global parser
 
-    #some code from https://nicschrading.com/project/Intro-to-NLP-with-spaCy/
+	#some code from https://nicschrading.com/project/Intro-to-NLP-with-spaCy/
 
-    #if data is bad, return empty
-    if type(rawtext) is not str:
-        return ''
-    
-    #split text with punctuation
-    bad_chars = "".join(string.punctuation)
-    for c in bad_chars: rawtext = rawtext.replace(c, "")
-    
-    #parse 
-    tokens = parser(rawtext)
+	#if data is bad, return empty
+	if type(rawtext) is not str:
+		return ''
+	
+	#split text with punctuation
+	bad_chars = "".join(string.punctuation)
+	for c in bad_chars: rawtext = rawtext.replace(c, "")
+	
+	#parse 
+	tokens = parser(rawtext)
 
-    # stoplist the tokens
-    tokens = [tok for tok in tokens if tok not in stopwords.words('english')]
-    
-    return tokens
+	# stoplist the tokens
+	tokens = [tok for tok in tokens if tok not in stopwords.words('english')]
+	
+	return tokens
 
 
+def makePOSTaggedList(tokens,probs_cutoff_lower,limitPOS=None):
+#    BADPOS = ['PUNCT','NUM','X','SPACE']
+	if limitPOS:
+		GOODPOS = limitPOS
+	else:
+		GOODPOS = ['NOUN','PROPN','VERB','ADJ','ADV']
+	SYMBOLS = " ".join(string.punctuation).split(" ")#+[">","<","|","/","\"]
+	probs_cutoff_upper = -7.6 #by inspection of sample data
+	nodes = []
+	lemmas = []
+	for tok in tokens:
+		goodPOS = tok.pos_ in GOODPOS 
+		notStopword = tok.orth_ not in stopwords.words('english')
+		notSymbol = tok.orth_ not in SYMBOLS
+		
+		if notStopword and notSymbol:
+			nodes.append((tok.lemma_,tok.pos_))
+	return nodes  
 
 
 def getLemmas(tokens):
-    # lemmatize
-    lemmas = [tok.lemma_.lower().strip() for tok in tokens]
-    return lemmas
+	# lemmatize
+	lemmas = [tok.lemma_.lower().strip() for tok in tokens]
+	return lemmas
 
 
 def makeNodelist(tokens,probs_cutoff_lower,limitPOS=None):
 #    BADPOS = ['PUNCT','NUM','X','SPACE']
-    if limitPOS:
-        GOODPOS = limitPOS
-    else:
-        GOODPOS = ['NOUN','PROPN','VERB','ADJ','ADV']
-    SYMBOLS = " ".join(string.punctuation).split(" ")#+[">","<","|","/","\"]
-    probs_cutoff_upper = -7.6 #by inspection of sample data
-    nodes = []
-    lemmas = []
-    for tok in tokens:
-        goodPOS = tok.pos_ in GOODPOS 
-        notStopword = tok.orth_ not in stopwords.words('english')
-        notSymbol = tok.orth_ not in SYMBOLS
-        isMeaningful = tok.prob > probs_cutoff_lower and tok.prob < probs_cutoff_upper
-        
-        if goodPOS and notStopword and notSymbol and isMeaningful:
-            nodes.append(tok.lemma_+' '+tok.pos_)
-            lemmas.append(tok.lemma_)
-    return lemmas  
+	if limitPOS:
+		GOODPOS = limitPOS
+	else:
+		GOODPOS = ['NOUN','PROPN','VERB','ADJ','ADV']
+	SYMBOLS = " ".join(string.punctuation).split(" ")#+[">","<","|","/","\"]
+	probs_cutoff_upper = -7.6 #by inspection of sample data
+	nodes = []
+	lemmas = []
+	for tok in tokens:
+		goodPOS = tok.pos_ in GOODPOS 
+		notStopword = tok.orth_ not in stopwords.words('english')
+		notSymbol = tok.orth_ not in SYMBOLS
+		isMeaningful = tok.prob > probs_cutoff_lower and tok.prob < probs_cutoff_upper
+		
+		if goodPOS and notStopword and notSymbol and isMeaningful:
+			nodes.append(tok.lemma_+' '+tok.pos_)
+			lemmas.append(tok.lemma_)
+	return lemmas  
 
 def findMeaningfulCutoffProbability(alltokens):
-    probs = [tok.prob for tok in alltokens]
-    #set probs_cutoff by inspection by looking for the elbow on the plot of sorted log probabilities
+	probs = [tok.prob for tok in alltokens]
+	#set probs_cutoff by inspection by looking for the elbow on the plot of sorted log probabilities
 #    probs_cutoff = 500
 #    probs_cutoff = probs[int(input("By inspection, at which rank is the elbow for the log probability plot? [integer]"))]
-    
-    #removing the lowest observed probability seems to remove most of the spelling errors
-    probs_cutoff_lower = min(probs)
-    return probs_cutoff_lower
+	
+	#removing the lowest observed probability seems to remove most of the spelling errors
+	probs_cutoff_lower = min(probs)
+	return probs_cutoff_lower
 
 def david_dict(data):
-    cats = [d[0] for d in data if "noise" not in d[0]]
-    dout = {c:set([int(d[1]) for d in data if d[0]==c]) for c in cats}
-    #dout['noise'] = set([int(d[1]) for d in data if 'noise' in d[0]])
-    return dout
+	cats = [d[0] for d in data if "noise" not in d[0]]
+	dout = {c:set([int(d[1]) for d in data if d[0]==c]) for c in cats}
+	#dout['noise'] = set([int(d[1]) for d in data if 'noise' in d[0]])
+	return dout
 
+
+
+def pre_process(df):
+	tqdm.pandas(desc="Make Spacy Tokens")
+	full_sentences = [f[2] for f in df.values]
+	word_model = similarity_functions.model
+	df['tokens'] = df.ix[:,2].progress_apply(lambda x: cleanPassage(x))    
+	df['lemmas'] = df['tokens'].apply(lambda x: getLemmas(x))
+	sentences = list(df['lemmas'])
+	probs_cutoff_lower = findMeaningfulCutoffProbability([t for tok in df['tokens'] for t in tok])
+	tqdm.pandas(desc="Remove redundant lemmas")
+	selected_lemmas = df['tokens'].progress_apply(lambda x: makeNodelist(x,probs_cutoff_lower))
+	pos_tagged_lemmas = df['tokens'].progress_apply(lambda x: makePOSTaggedList(x,probs_cutoff_lower))
+	words, word_similarity_matrix = w2v_word.calculate_matrix(selected_lemmas,word_model)
+	return words,sentences,selected_lemmas,pos_tagged_lemmas,word_similarity_matrix
+
+
+
+def pre_process(df):
+	tqdm.pandas(desc="Make Spacy Tokens")
+	full_sentences = [f[2] for f in df.values]
+	word_model = similarity_functions.model
+	df['tokens'] = df.ix[:,2].progress_apply(lambda x: cleanPassage(x))    
+	df['lemmas'] = df['tokens'].apply(lambda x: getLemmas(x))
+	sentences = list(df['lemmas'])
+	probs_cutoff_lower = findMeaningfulCutoffProbability([t for tok in df['tokens'] for t in tok])
+	tqdm.pandas(desc="Remove redundant lemmas")
+	selected_lemmas = df['tokens'].progress_apply(lambda x: makeNodelist(x,probs_cutoff_lower))
+	pos_tagged_lemmas = df['tokens'].progress_apply(lambda x: makePOSTaggedList(x,probs_cutoff_lower))
+	words, word_similarity_matrix = w2v_word.calculate_matrix(selected_lemmas,word_model)
+	#return words,sentences,selected_lemmas,pos_tagged_lemmas,word_similarity_matrix
+	return words,sentences,selected_lemmas,word_similarity_matrix

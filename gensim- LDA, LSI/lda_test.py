@@ -11,16 +11,6 @@ en_stop = get_stop_words('en')
 
 # Create p_stemmer of class PorterStemmer
 p_stemmer = PorterStemmer()
-    
-
-contents = [];
-
-import glob
-file_list = glob.glob("*.txt");
-for file_name in file_list:
-    with open(file_name) as f:
-        content = [line.decode('latin-1').strip('"') for line in f.readlines()]
-        contents.append(content)
 
 
 # create sample documents
@@ -59,10 +49,12 @@ dictionary = corpora.Dictionary(texts)
 corpus = [dictionary.doc2bow(text) for text in texts]
 
 # generate LDA model
-ldamodel = gensim.models.ldamodel.LdaModel(corpus, num_topics=2, id2word = dictionary, passes=20)
+ldamodel = gensim.models.ldamodel.LdaModel(corpus, num_topics=3, id2word = dictionary, passes=20)
 
 
 topics = ldamodel.print_topics(num_topics=2, num_words=4);
 
 
 doc_lda = ldamodel[dictionary.doc2bow(texts[1])]
+
+[l[1] for l in doc_lda]

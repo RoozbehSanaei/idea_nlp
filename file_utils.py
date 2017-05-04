@@ -1,6 +1,8 @@
 import pickle
 import xlwt
 import pandas as pd
+import csv
+
 
 def save_to_file(variable,filename):
 	pickle.dump( variable, open(filename, "wb" ) )
@@ -28,8 +30,27 @@ def extract_col(file,i):
 	headers = df.ix[:,i].tolist()
 	return headers
 
-def lists_to_csv(inps,cols,f):
+def cols_to_csv(inps,cols,f):
 	inps_t = list(map(list, zip(*inps)))
 	panda_results = pd.DataFrame(inps_t)
 	panda_results.columns = cols
 	panda_results.to_csv(f)
+
+def rows_to_csv(inps_t,cols,f):
+	panda_results = pd.DataFrame(inps_t)
+	panda_results.columns = cols
+	panda_results.to_csv(f)
+
+
+def save_to_csv(M,filename):
+	with open("clusters0.csv", "w") as output_file:
+		writer = csv.writer(output_file, delimiter=';')
+		writer.writerows(M)
+
+
+
+
+def load_from_csv(M,filename):
+	with open("clusters0.csv", "w") as output_file:
+		reader = csv.reader(output_file, delimiter=';')
+		reader.writerows(M)
