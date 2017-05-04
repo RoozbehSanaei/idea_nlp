@@ -87,15 +87,10 @@ def relevance(w):
 
 
 jj = 0
-inputbasepath = '/home/roozbeh/data/wiki/data/'
-outputbasepath = '/home/roozbeh/data/wiki/data/'
-#basename = 'Distributed Experience and Novice (superset) clean TEST SAMPLE'
-basename = 'n1400_dn'
-fileextension = '.csv'
-path = inputbasepath + basename + fileextension
+
 
 print("loading file...",end="",flush=True)
-gn = pd.read_csv(path)
+gn = pd.read_csv('/home/roozbeh/data/wiki/data/n1400_dn.csv')
 print("done!",flush=True)
 	
 tqdm.pandas(desc="Make Spacy Tokens")
