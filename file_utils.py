@@ -54,3 +54,9 @@ def load_from_csv(M,filename):
 	with open("clusters0.csv", "w") as output_file:
 		reader = csv.reader(output_file, delimiter=';')
 		reader.writerows(M)
+
+
+def save_to_txt_file(M,filename):
+	thefile = open(filename, 'w')
+	for item in M:
+		thefile.write("%s\n" % item)

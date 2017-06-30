@@ -1,0 +1,13 @@
+,algorithm,index,Similarity_Type,Number of Clusters (input),Number of clusters(output),Word/Sentence,File_Name,Clusters,Mismatch Metric,Match Metric,M,False Positive,False Negative
+0,spectralـnearest_neighbors,1,lda_similarity,100,100,sentence-based,n1400_dn,"[2 2 2 ..., 5 5 2]",83122.0,0.0,1.0,83122.0,0.0
+1,spectralـprecomputed,2,lda_similarity,100,100,sentence-based,n1400_dn,"[57 57 57 ..., 77  3 45]",360454.0,0.0,1.0,360454.0,0.0
+2,spectralـrbf,3,lda_similarity,100,100,sentence-based,n1400_dn,"[34 71 92 ...,  8 36  8]",195606.0,0.0,1.0,195606.0,0.0
+3,spectralـsigmoid,4,lda_similarity,100,100,sentence-based,n1400_dn,"[88 90 52 ..., 85 94 85]",250234.0,0.0,1.0,250234.0,0.0
+4,spectralـpolynomial,5,lda_similarity,100,100,sentence-based,n1400_dn,"[96 32 41 ..., 70  8 82]",207862.0,0.0,1.0,207862.0,0.0
+5,spectralـpoly,6,lda_similarity,100,100,sentence-based,n1400_dn,"[94 98 64 ..., 64 20 66]",183668.0,0.0,1.0,183668.0,0.0
+6,spectralـlinear,7,lda_similarity,100,100,sentence-based,n1400_dn,"[31 47 18 ..., 53 86  5]",211464.0,0.0,1.0,211464.0,0.0
+7,agglomerative_clustering,8,lda_similarity,100,100,sentence-based,n1400_dn,"[0 0 0 ..., 3 2 1]",1692700.0,0.0,1.0,1692700.0,0.0
+8,affinity_propagation,9,lda_similarity,100,200,sentence-based,n1400_dn,"[  0  86  41 ..., 197 198 199]",10600.0,0.0,7.0,10600.0,0.0
+9,kmeans,10,lda_similarity,100,1,sentence-based,n1400_dn,"[0 0 0 ..., 0 0 0]",1960000.0,0.0,1400.0,1960000.0,0.0
+10,birch,11,lda_similarity,100,1,sentence-based,n1400_dn,"[0 0 0 ..., 0 0 0]",1960000.0,0.0,1400.0,1960000.0,0.0
+11,ward_clustering,12,lda_similarity,100,100,sentence-based,n1400_dn,"[0 0 0 ..., 3 2 1]",1692700.0,0.0,1.0,1692700.0,0.0
