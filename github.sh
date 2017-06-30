@@ -1,4 +1,5 @@
 repository_name=idea_nlp
+git config --global push.default matching
 git config --global credential.helper cache
 git init
 git add *
