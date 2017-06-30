@@ -1,0 +1,10 @@
+*.npy
+*.npz
+*.zip
+*.model
+*.mm
+*.mm.index
+*.en.text
+*.bin
+*.bz2
+*.csv
