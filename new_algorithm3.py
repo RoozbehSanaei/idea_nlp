@@ -44,12 +44,12 @@ def cleanPassage(rawtext):
 
 
 def relevance(w):
-	score = model.similarity('car',w)+model.similarity('city',w)
+	score = model.similarity('satellite',w)+model.similarity('technology',w)
 	return score
 
 
 def makelist(rawtext,limitPOS=None):
-	generic = ['city','car','transportation','area','traffic','vehicle','town','transport','system','its','passenger']
+	generic = []
 	tokens = cleanPassage(rawtext)
 	if limitPOS:
 		GOODPOS = limitPOS
@@ -77,7 +77,7 @@ def makelist(rawtext,limitPOS=None):
 def sort_index(X):
 	return sorted(range(len(X)), key=lambda k: -X[k])
 
-f = 'n1400_dn'
+f = 'satellite_news'
 sentences_strs = file_utils.extract_col('/home/roozbeh/data/wiki/data/'+f+'.csv',2)
 
 bag_of_lemmas = [list(set(makelist(x))) for x in tqdm(sentences_strs)]
@@ -163,20 +163,18 @@ file_utils.rows_to_csv(sents,['cluster','n','keywords','idea'],'res-'+f+'.csv')
 
 #create the mind-map file
 
+
+Keywords = [];
 L = ['id,value','ideas,']; 
 for j in range(0,len(limit_sets)):	
 	if (len(limit_sets[j][0])==2):
 		if (limit_sets[j][0][0]!=limit_sets[j-1][0][0]):
 			L.append('ideas.'+limit_sets[j][0][0]+',');
+			Keywords.append(limit_sets[j][0][0]);
 		L.append('ideas.'+limit_sets[j][0][0]+'.'+limit_sets[j][0][1]+',');
 		
 
 
 file_utils.save_to_txt_file(L,'map.csv');
-
-
-
-
-
 
 
